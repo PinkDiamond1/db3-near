@@ -9,12 +9,12 @@ html {
   --light-gray: #ccc;
   --shadow: #e6e6e6;
   --success: rgb(90, 206, 132);
-  --primary: #FF585D;
+  --primary: #888;
   --secondary: #0072CE;
 
   background-color: var(--bg);
   color: var(--fg);
-  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: calc(0.9em + 0.5vw);
   line-height: 1.3;
 }
@@ -26,14 +26,14 @@ body {
 
 main {
   margin: 0 auto;
-  max-width: 26em;
+  max-width: 42em;
 }
 
 main.please-wait {}
 
 h1 {
-  background-image: url(./logo-black.svg);
-  background-position: center 1em;
+  background-image: url(./logo-dark.svg);
+  background-position: left 1em;
   background-repeat: no-repeat;
   background-size: auto 1.5em;
   margin-top: 0;
@@ -41,12 +41,30 @@ h1 {
   text-align: center;
   font-size: 1.5em;
 }
+
+#wrap {
+  border: 2px solid #bbb;
+  padding: .5em;
+  margin-bottom: .5em;
+}
+
+#btn {
+  text-align: right; 
+  margin-top: 1.5em; 
+  float: right;
+}
+
 .greeting {
   color: var(--secondary);
   text-decoration: underline;
 }
+
 h2 {
-  text-align: center;
+  text-align: left;
+}
+
+h3 {
+  color: var(--primary);;
 }
 
 .please-wait .change {
@@ -103,7 +121,7 @@ ul.information  {
 
 a,
 .link {
-  color: var(--primary);
+  color: var(--primary);;
   text-decoration: none;
 }
 a:hover,
@@ -111,10 +129,15 @@ a:focus,
 .link:hover,
 .link:focus {
   text-decoration: underline;
+  color: blue;
 }
 a:active,
 .link:active {
-  color: var(--secondary);
+  color: var(--primary);;
+}
+
+footer {
+
 }
 
 button, input {
@@ -168,6 +191,62 @@ li {
   padding-bottom: 1em;
 }
 
+.footer {
+  padding:40px 0;
+}
+
+.footer ul {
+  padding:0;
+  list-style:none;
+  text-align:center;
+  font-size:18px;
+  line-height:1.6;
+  margin-bottom:0;
+}
+
+.footer li {
+  padding:0 10px;
+}
+
+.footer ul a {
+  color:inherit;
+  text-decoration:none;
+  opacity:0.8;
+}
+
+.footer ul a:hover {
+  opacity:1;
+}
+
+.footer .social {
+  text-align:center;
+  padding-bottom:25px;
+}
+
+.footer .social > a {
+  font-size:24px;
+  width:40px;
+  height:40px;
+  line-height:40px;
+  display:inline-block;
+  text-align:center;
+  margin:0 8px;
+  color:inherit;
+  opacity:.75;
+}
+
+.footer .social > a:hover {
+  opacity:1;
+}
+
+.footer .copyright {
+  margin-top:.2em;
+  text-align:center;
+  font-size:13px;
+  color:#aaa;
+  margin-bottom:0;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     --bg: #1e1e1e;
@@ -177,7 +256,7 @@ li {
     --light-gray: #444;
   }
   h1 {
-    background-image: url(./logo-white.svg);
+    background-image: url(./logo-light.svg);
   }
   input:focus {
     box-shadow: 0 0 10em rgba(255, 255, 255, 0.02) inset;
