@@ -53,48 +53,89 @@
       Sign out <span data-behavior="account-id"></span>
     </button>
       <h1>
-        Discover
+        Discover Databases
       </h1>
-      <form class="change">
-        <label for="greeting">Change greeting:</label>
-        <div>
-          <input
-                  autocomplete="off"
-                  id="greeting"
-                  data-behavior="greeting"
-          />
-          <button>
-            <span>Save</span>
-            <div class="loader"></div>
-          </button>
-        </div>
-      </form>
+      
       <p>
-        Here you can discover DB3 databases.
+        Pick and choose the database you're interested in.
       </p>
-      <ol>
-        <li>
-          Look in <code>./frontend/index.js</code> – you'll see <code>getGreeting</code>
-          and <code>setGreeting</code> being called on <code>contract</code>.
-          What's this?
-        </li>
-        <li>
-          Ultimately, this <code>contract</code> code is defined in
-          <code>./contract</code> – this is the source code for your
-          <a target="_blank" href="https://docs.near.org/docs/develop/contracts/overview">smart contract</a>.
-        </li>
-        <li>
-          When you run <code>npm run dev</code>, the contract's code gets deployed
-          to the NEAR testnet. You can see how this happens by looking in <code>package.json</code>.
-        </li>
-      </ol>
-      <hr>
-      <p>
-        To keep learning, check out
-        <a target="_blank" href="https://docs.near.org">the NEAR docs</a>
-        or look through some
-        <a target="_blank" href="https://examples.near.org">example apps</a>.
-      </p>
+
+
+<table class="dataTable">
+    <thead>
+        <tr>
+            <th>Author</th>
+            <th>Name</th>
+            <th>License</th>
+            <th>CID</th>
+            <th>Royalties</th>
+            <th>Query</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><a href="#">alex.near</a></td>
+            <td>My Database 1</td>
+            <td>CC BY 4.0 X</td>
+            <td>QmTtDqWzo1</td>
+            <td>11%</td>
+            <td>
+                <button class="button action">Select</button>
+            </td>
+        </tr>
+        <tr>
+            <td><a href="#">you.near</a></td>
+            <td>Some Random DB</td>
+            <td>CC BY 4.0 Y</td>
+            <td>QmV9tSDx9U</td>
+            <td>3%</td>
+            <td>
+                <button class="button action">Select</button>
+            </td>
+        </tr>
+        <tr>
+            <td><a href="#">me.near</a></td>
+            <td>Oracle Data</td>
+            <td>CC BY 4.0 Z</td>
+            <td>QmdiA1atSB</td>
+            <td>40%</td>
+            <td>
+                <button class="button action">Select</button>
+            </td>
+        </tr>
+        <tr>
+            <td><a href="#">ilya.near</a></td>
+            <td>DEX Data</td>
+            <td>All rights reserved</td>
+            <td>QmXExS4BMc</td>
+            <td>12%</td>
+            <td>
+                <button class="button action">Select</button>
+            </td>
+        </tr>
+        <tr>
+            <td><a href="#">alex.near</a></td>
+            <td>Bridge 249</td>
+            <td>DB License X</td>
+            <td>QmV9tSDx9U</td>
+            <td>26%</td>
+            <td>
+                <button class="button action">Select</button>
+            </td>
+        </tr>
+        <tr>
+            <td><a href="#">oliver.near</a></td>
+            <td>Yet another DB</td>
+            <td>CC BY 4.0 CT1</td>
+            <td>QmV9tSDx9U</td>
+            <td>11%</td>
+            <td>
+                <button class="button action">Select</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+      
       <div class="footer">
         <footer>
             <div class="social"><a href="#"><i data-feather="twitter"></i></a><a href="#"><i data-feather="github"></i></a></div>

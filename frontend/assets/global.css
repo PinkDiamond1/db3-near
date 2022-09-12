@@ -249,6 +249,83 @@ li {
   margin-bottom:0;
 }
 
+.dataTable {
+  display: block;
+  width: 100%;
+  margin: 1em 0;
+  font-size: .8em;
+}
+
+.dataTable thead, .dataTable tbody, .dataTable thead tr, .dataTable th {
+  display: block;
+}
+
+.dataTable thead {
+  float: left;
+}
+
+.dataTable tbody {
+  width: auto;
+  position: relative;
+  overflow-x: auto;
+}
+
+.dataTable td, .dataTable th {
+  padding: .625em;
+  line-height: 1.5em;
+  border-bottom: 1px solid #ccc;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.dataTable th {
+  text-align: left;
+  background: rgba(0, 0, 0, 0.14);
+  border-bottom: 1px solid #aaa;
+}
+
+.dataTable tbody tr {
+  display: table-cell;
+}
+
+.dataTable tbody td {
+  display: block;
+}
+
+.dataTable tr:nth-child(odd) {
+  background: rgba(0, 0, 0, 0.07);
+}
+
+@media screen and (min-width: 50em) {
+
+  .dataTable {
+    display: table;
+  }
+  
+  .dataTable thead {
+    display: table-header-group;
+    float: none;
+  }
+  
+  .dataTable tbody {
+    display: table-row-group;
+  }
+  
+  .dataTable thead tr, .dataTable tbody tr {
+    display: table-row;
+  }
+  
+  .dataTable th, .dataTable tbody td {
+    display: table-cell;
+  }
+  
+  .dataTable td, .dataTable th {
+    width: auto;
+  }
+  
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     --bg: #1e1e1e;
