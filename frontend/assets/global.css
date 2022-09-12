@@ -5,11 +5,12 @@
 html {
   --bg: #efefef;
   --fg: #1e1e1e;
+  --card: #f8f8f8;
   --gray: #555;
   --light-gray: #ccc;
   --shadow: #e6e6e6;
   --success: rgb(90, 206, 132);
-  --primary: #888;
+  --primary: #2C106A;
   --secondary: #0072CE;
 
   background-color: var(--bg);
@@ -44,6 +45,7 @@ h1 {
 
 #wrap {
   border: 2px solid #bbb;
+  background-color: var(--card);
   padding: .5em;
   margin-bottom: .5em;
 }
@@ -251,6 +253,8 @@ li {
   html {
     --bg: #1e1e1e;
     --fg: #efefef;
+    --primary: #7cb9e8;
+    --card: #333;
     --gray: #aaa;
     --shadow: #2a2a2a;
     --light-gray: #444;
