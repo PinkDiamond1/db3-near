@@ -10,6 +10,8 @@ DB3 is a decentralized web3 database network where service providers get paid fo
 
 ## Design
 
+<img width="750" alt="db3" src="https://user-images.githubusercontent.com/910436/189650945-b0d17ecb-ade7-4010-8fba-5e66a606df6c.png">
+
 
 ## License
 
