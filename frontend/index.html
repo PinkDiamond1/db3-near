@@ -5,41 +5,55 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="assets/favicon.ico"/>
   <link rel="apple-touch-icon" href="assets/favicon.ico"/>
-  <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous"> -->
-  <title>Welcome to NEAR</title>
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+  <title>DB3 | Discover</title>
   <link rel="stylesheet" href="assets/global.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
 </head>
 <body>
   <main id="signed-out-flow" style="display: none">
-    <h1>
-      The contract says: <span class="greeting" data-behavior="greeting"></span>
-    </h1>
-    <h3>
-      Welcome to NEAR!
-    </h3>
-    <p>
-      Your contract is storing a greeting message in the NEAR blockchain. To
-      change it you need to sign in using the NEAR Wallet. It is very simple,
-      just use the button below.
-    </p>
-    <p>
-      Do not worry, this app runs in the test network ("testnet"). It works
-      just like the main network ("mainnet"), but using NEAR Tokens that are
-      only for testing!
-    </p>
-    <p style="text-align: center; margin-top: 2.5em">
+    <div id="btn">
       <button id="sign-in-button">Sign in with NEAR Wallet</button>
+    </div>
+    <h1></h1>
+    <h2>🪄 MVP: Decentralized Database on NEAR</h2>
+    <div id="wrap">
+    <h3>👩‍💻 Developers</h3>
+    <p>
+      Write <strong>Database Schema</strong> and <strong>ETL logic</strong> code and <strong>publish</strong> them on-chain using a custom DB3 smart contract in which only the CID of the bundle is stored.
     </p>
+    </div>
+   <div id="wrap">
+   <h3>🌐 Hosts</h3>
+    <p>
+      Choose which <strong>databases</strong> you're interested to host. Pay a security <strong>deposit</strong> and <strong>register</strong> their API endpoints on-chain. Hosts utilize DB3 nodes to launch and sync databases.
+    </p>
+   </div>
+   <div id="wrap">
+    <h3>👤 Users</h3>
+    <p>
+      <strong>Discover</strong> API endpoints for databases you're interested in. <strong>Sign</strong> queries with an attached <strong>fee payments</strong> and send them to selected hosts for execution.
+    </p>
+  </div>
 
+      <div class="footer">
+        <footer>
+            <div class="social"><a href="#"><i data-feather="twitter"></i></a><a href="#"><i data-feather="github"></i></a></div>
+            <p class="copyright">Built with ☕ and passion by BWD 2022</p>
+        </footer>
+      </div>
   </main>
 
-  <div id="signed-in-flow" style="display: none">
-    <button style="float: right" id="sign-out-button">
+  <main id="signed-in-flow" style="display: none">
+    <button style="margin-top: 1.5em; float: right" id="sign-out-button">
       Sign out <span data-behavior="account-id"></span>
     </button>
-    <main>
       <h1>
-        The contract says: <span class="greeting" data-behavior="greeting"></span>
+        Discover
       </h1>
       <form class="change">
         <label for="greeting">Change greeting:</label>
@@ -56,7 +70,7 @@
         </div>
       </form>
       <p>
-        Look at that! A Hello World app! This greeting is stored on the NEAR blockchain. Check it out:
+        Here you can discover DB3 databases.
       </p>
       <ol>
         <li>
@@ -81,9 +95,17 @@
         or look through some
         <a target="_blank" href="https://examples.near.org">example apps</a>.
       </p>
+      <div class="footer">
+        <footer>
+            <div class="social"><a href="#"><i data-feather="twitter"></i></a><a href="#"><i data-feather="github"></i></a></div>
+            <p class="copyright">Built with ☕ and passion by BWD 2022</p>
+        </footer>
+      </div>
     </main>
   </div>
-
+  <script>
+    feather.replace()
+  </script>
   <script src="index.js" type="module"></script>
 </body>
 </html>
