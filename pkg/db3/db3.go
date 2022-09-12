@@ -1,3 +1,6 @@
+// Copyright (c) 2022 Blockwatch Data Inc.
+// Author: alex@blockwatch.cc
+
 package db3
 
 import (
@@ -30,6 +33,16 @@ var (
 
 // Registers a new database
 func (d *DB3) Deploy(m Manifest) DBId {
+    if m.RoyaltyBips < 0 || m.RoyaltyBips > 10000 {
+        panic("Royalty out of range")
+    }
+    if m.CID == "" {
+        panic("Empty code CID")
+    }
+    if m.Author == "" {
+        m.Author = ctx.Caller
+    }
+
     dbid := d.NextId
     d.Owners[dbid] = ctx.Caller
     d.Manifests[dbid] = m

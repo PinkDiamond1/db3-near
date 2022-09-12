@@ -1,3 +1,6 @@
+// Copyright (c) 2022 Blockwatch Data Inc.
+// Author: alex@blockwatch.cc
+
 package db3
 
 import (
@@ -63,7 +66,7 @@ type SignedResult struct {
 }
 
 type Manifest struct {
-    Author      AccountID
+    Author      near.AccountID
     Name        string
     License     string
     CID         CodeCID
