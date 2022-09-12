@@ -23,7 +23,7 @@ The DB3 on-chain protocol organizes fee payments and helps establish trust in qu
 Design choices for on-chain functions `deposit`, `register`, `settle`, and `claim`:
 
 1. API registry, deposits, database content, and fee settlement can be organized into a single **combined** contract or **split** across multiple collaborating contracts.
-2. On-chain database state can be shared (one set of contracts shared by all published databases) or private (one set of contracts that is private for each database).
+2. On-chain database state can be **shared** (one set of contracts shared by all published databases) or **private** (one set of contracts that is private for each database).
 
 
 ## License
