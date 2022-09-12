@@ -12,6 +12,22 @@ DB3 is a decentralized web3 database network where service providers get paid fo
 
 <img width="750" alt="db3" src="https://user-images.githubusercontent.com/910436/189650945-b0d17ecb-ade7-4010-8fba-5e66a606df6c.png">
 
+The DB3 on-chain protocol organizes fee payments and helps establish trust in query results. Fraudulent behaviour and censorship is discouraged by requiring hosts to post a security deposit that may be slashed if query results differ.
+
+* **Developers** write database schema and ETL logic code and `publish` them using a custom DB3 smart contract on-chain (only the CID of the bundle is stored)
+* **Hosts** choose which databases they are interested to host, then pay a security `deposit` and `register` their API endpoints on-chain; they utilize DB3 nodes to launch and sync databases; the node keeps databases in-sync by pulling and validating data from **trusted ingest sources** (out of scope for this hackathon)
+* **Users** first `discover` API endpoints for databases they are interested in, then `sign` queries with attached **fee payments** and send them to selected hosts for execution
+* after hosts have executed a query they (1) `sign` the result, (2) return it to the user immediately (ensures low latency), and (3) `settle` fee and result with the database contract
+* the database contract can split fees between hosts and developers who can `claim` payouts
+
+Design choices for on-chain functions `deposit`, `register`, `settle` and `claim`:
+
+1. API registry, deposits, database content and fee settlement can be organized into a single **combined** contract or **split** across multiple collaborating contracts.
+2. On-chain database state can be shared (one set of contracts shared by all published databases) or private (one set of contracts that is private for each database).
+
+
+
+
 
 ## License
 
