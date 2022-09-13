@@ -346,7 +346,7 @@ li {
     --primary: #7cb9e8;
     --secondary: #0072ce;
     --invert: #ddd;
-    --hover: #222;
+    --hover: #111;
   }
   h1 {
     background-image: url(./logo-dark.svg);
