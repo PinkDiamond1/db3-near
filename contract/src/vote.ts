@@ -1,4 +1,4 @@
-import { UnorderedMap } from 'near-sdk-js';
+import { splitkey } from './utils';
 
 export class Vote {
   account_id: string;
@@ -14,9 +14,11 @@ export class Election {
   votes: Array<Vote>;
   results: Map<string, number>;
 
-  constructor({ votes }:{ votes: UnorderedMap }) {
+  constructor({ votes }:{ votes: Map<string, string> }) {
+    this.votes = new Array()
+    this.results = new Map()
     for (let [ k, v ] of votes) {
-      let account_id = k as string
+      let account_id = splitkey(k as string)[2]
       let result_cid = v as string
       this.votes.push(new Vote({ account_id, result_cid }))
       let count = this.results.get(result_cid) || 0
@@ -48,7 +50,7 @@ export class Election {
   }
 
   minority(): Array<Vote> {
-    let minority: Array<Vote>
+    let minority: Array<Vote> = new Array()
     let numVoters = this.votes.length
     let cutoff = 200 * numVoters / 3
     for (let vote of this.votes) {
@@ -60,7 +62,7 @@ export class Election {
   }
 
   superMajority(): Array<Vote> {
-    let majority: Array<Vote>
+    let majority: Array<Vote> = new Array()
     let numVoters = this.votes.length
     let cutoff = 200 * numVoters / 3
     for (let vote of this.votes) {

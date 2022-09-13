@@ -1,19 +1,19 @@
 import { NearBindgen, near, call, view, initialize, LookupMap, UnorderedMap } from 'near-sdk-js';
-import { assert } from './utils'
+import { assert, makekey, splitkey, scanmap } from './utils'
 import { Manifest, STORAGE_COST, SECURITY_DEPOSIT, SLASHED_DEPOSIT_BIPS, MAX_BLOCKS_TO_SETTLE } from './model'
 import { Election } from './vote'
 
 
 @NearBindgen({})
-class DonationContract {
+class Db3Contract {
   owner: string = "db3.blockwatch.testnet";
   next_id: number = 0;
-  db_owners: LookupMap = new LookupMap('map-dbid-owner');
-  db_manifests: LookupMap = new LookupMap('map-dbid-manifest');
-  db_api_registry: LookupMap = new LookupMap('map-dbid-api');
+  db_owners: UnorderedMap = new UnorderedMap('map-dbid-owner');
+  db_manifests: UnorderedMap = new UnorderedMap('map-dbid-manifest');
+  db_api_registry: UnorderedMap = new UnorderedMap('map-dbid-api');
   db_deposits: LookupMap = new LookupMap('map-dbid-deposit');
   db_ttls: UnorderedMap = new UnorderedMap('map-dbid-ttl');
-  db_pending_results: LookupMap = new LookupMap('map-dbid-pending-results');
+  db_pending_votes: UnorderedMap = new UnorderedMap('map-dbid-pending-results');
   db_pending_fees: LookupMap = new LookupMap('map-dbid-pending-fees');
   db_settled_fees: LookupMap = new LookupMap('map-dbid-settled-fees');
   db_settled_royalties: LookupMap = new LookupMap('map-dbid-settled-royalties');
@@ -30,22 +30,18 @@ class DonationContract {
   deploy({ manifest }: { manifest: Manifest }): string {
     let amount: bigint = near.attachedDeposit() as bigint;
     let royalty_bips = BigInt(manifest.royalty_bips || '0')
-    assert(amount > STORAGE_COST, `Attach at least ${STORAGE_COST} yoctoNEAR for storage`);
+    assert(amount >= STORAGE_COST, `Attach at least ${STORAGE_COST} yoctoNEAR for storage`);
     assert(royalty_bips >= 0n && royalty_bips <= 10000n, "Royalty basis points out of range [0, 10000]")
     assert(manifest.code_cid.length > 0, "Empty code CID")
+    let caller = near.signerAccountId()
 
     if (manifest.author_id.length === 0) {
-      manifest.author_id = near.signerAccountId()
+      manifest.author_id = caller
     }
 
     let dbid:string = this.next_id.toString()
-    this.db_owners.set(dbid, near.signerAccountId())
+    this.db_owners.set(dbid, caller)
     this.db_manifests.set(dbid, manifest)
-    this.db_api_registry.set(dbid, new UnorderedMap('map-accid-api'))
-    this.db_deposits.set(dbid, new LookupMap('map-accid-deposit'))
-    this.db_ttls.set(dbid, new LookupMap('map-cid-block'))
-    this.db_pending_results.set(dbid, new UnorderedMap('map-cid-result'))
-    this.db_pending_fees.set(dbid, new LookupMap('map-cid-fees'))
 
     this.next_id++
     return dbid;
@@ -56,11 +52,11 @@ class DonationContract {
   deposit({ dbid }: { dbid: string }): void {
     assert(parseInt(dbid) < this.next_id, "Database id does not exist")
     let caller = near.signerAccountId()
-    let deposits = this.db_deposits.get(dbid) as LookupMap
+    let key = makekey(dbid, caller)
     let amount: bigint = near.attachedDeposit() as bigint;
-    let newDeposit = BigInt(deposits.get(caller) as string || '0') + amount
+    let newDeposit = BigInt(this.db_deposits.get(key) as string || '0') + amount
     assert(newDeposit >= SECURITY_DEPOSIT, "Security deposit too low")
-    deposits.set(caller, newDeposit.toString())
+    this.db_deposits.set(key, newDeposit.toString())
   }
 
   // Unlocks and returns security deposit on leave
@@ -68,8 +64,8 @@ class DonationContract {
   withdraw({ dbid }: { dbid: string }): void {
     assert(parseInt(dbid) < this.next_id, "Database id does not exist")
     let caller = near.signerAccountId()
-    let deposits = this.db_deposits.get(dbid) as LookupMap
-    let toTransfer = BigInt(deposits.get(caller) as string || '0')
+    let key = makekey(dbid, caller)
+    let toTransfer = BigInt(this.db_deposits.get(key) as string || '0')
     assert(toTransfer > 0n, "Caller did not pay deposit")
 
     // send the deposit back
@@ -77,9 +73,8 @@ class DonationContract {
     near.promiseBatchActionTransfer(promise, toTransfer)
 
     // remove registrations, but keep in pending and settled maps
-    deposits.remove(caller)
-    let registry = this.db_api_registry.get(dbid) as UnorderedMap
-    registry.remove(caller)
+    this.db_deposits.remove(key)
+    this.db_api_registry.remove(key)
   }
 
   // Registers the host's API endpoint for a database
@@ -88,50 +83,31 @@ class DonationContract {
   register_api({ dbid, uri }: { dbid: string, uri: string }): void {
     assert(parseInt(dbid) < this.next_id, "Database id does not exist")
     let caller = near.signerAccountId()
-    let deposits = this.db_deposits.get(dbid) as LookupMap
-    let deposit = BigInt(deposits.get(caller) as string || '0')
+    let key = makekey(dbid, caller)
+    let deposit = BigInt(this.db_deposits.get(key) as string || '0')
     assert(deposit >= SECURITY_DEPOSIT, "Security deposit too low")
-    let registry = this.db_api_registry.get(dbid) as UnorderedMap
     if (uri.length === 0) {
-      registry.remove(caller)
+      this.db_api_registry.remove(key)
     } else {
-      registry.set(caller, uri)
+      this.db_api_registry.set(key, uri)
     }
-  }
-
-  // Views all registered databases
-  @view({})
-  databases() {
-      return this.db_manifests
-  }
-
-  // Views all registered API endpoints for a database
-  @view({})
-  discover({ dbid }: { dbid: string }) {
-    assert(parseInt(dbid) < this.next_id, "Database id does not exist")
-    let uris: Array<string>
-    for (let [k, v] of this.db_api_registry.get(dbid) as UnorderedMap) {
-        uris.push(v as string)
-    }
-    return uris
   }
 
   // Pays query fee
   @call({payableFunction: true})
   escrow({ dbid, qid, ttl }: { dbid: string, qid: string, ttl: number }): void {
     assert(parseInt(dbid) < this.next_id, "Database id does not exist")
-    assert(ttl < near.blockIndex(), "Fee payment is expired")
+    assert(ttl > near.blockIndex(), "TTL in the past")
 
     // add fees paid to current fees for this CID (multiple calls may run in parallel)
+    let key = makekey(dbid, qid)
     let amount: bigint = near.attachedDeposit() as bigint;
-    let pending_fees = this.db_pending_fees.get(dbid) as LookupMap
-    let newFee = BigInt(pending_fees.get(qid) as string || '0') + amount
-    pending_fees.set(qid, newFee.toString())
+    let newFee = BigInt(this.db_pending_fees.get(key) as string || '0') + amount
+    this.db_pending_fees.set(key, newFee.toString())
 
     // store TTL unconditionally (this may override a TTL set via Settle,
     // but this case is expected)
-    let ttls = this.db_ttls.get(dbid) as LookupMap
-    ttls.set(qid, ttl)
+    this.db_ttls.set(key, ttl)
   }
 
   // Settle stores a query execution proof
@@ -139,30 +115,31 @@ class DonationContract {
   settle({ dbid, qid, rid }: { dbid: string, qid: string, rid: string }): void {
     assert(parseInt(dbid) < this.next_id, "Database id does not exist")
     let caller = near.signerAccountId()
-    let deposits = this.db_deposits.get(dbid) as LookupMap
-    let deposit = BigInt(deposits.get(caller) as string || '0')
+    let key = makekey(dbid, caller)
+    let deposit = BigInt(this.db_deposits.get(key) as string || '0')
     assert(deposit >= SECURITY_DEPOSIT, "Security deposit too low")
 
 
     // check and init result TTL on first settlement (this should have been done
     // by calling EscrowFee, but we cannot assume this tx was published
     // or processed yet, this makes sure we can later garbage collect either way)
-    let ttls = this.db_ttls.get(dbid) as LookupMap
-    let ttl = BigInt(ttls.get(qid) as string || '0');
-    if (!ttl) {
+    let ttlkey = makekey(dbid, qid)
+    let ttlval = this.db_ttls.get(ttlkey)
+    let ttl: bigint
+    if (!ttlval) {
+      near.log("TTL: missing entry, using default")
       ttl = near.blockIndex() + MAX_BLOCKS_TO_SETTLE
-      ttls.set(qid, ttl.toString())
+      this.db_ttls.set(ttlkey, ttl.toString())
+    } else {
+      ttl = BigInt(ttlval as string);
+      near.log("TTL: loaded ttl", ttl)
     }
+    near.log("TTL: ttl=", ttl, "block=", near.blockIndex())
     assert(ttl > near.blockIndex(), "Settlement timed out")
 
     // allocate sub map when this is the first call for this query
-    let results = this.db_pending_results.get(dbid) as UnorderedMap
-    let votes = results.get(qid) as UnorderedMap
-    if (votes === null) {
-      votes = new UnorderedMap("map-accid-votes")
-      results.set(qid, votes)
-    }
-    votes.set(caller, rid)
+    let votekey = makekey(dbid, qid, caller)
+    this.db_pending_votes.set(votekey, rid)
   }
 
   @call({})
@@ -185,6 +162,11 @@ class DonationContract {
     this.db_settled_royalties.remove(caller)
   }
 
+  @call({})
+  finalize(): void {
+    this.internalFinalizeResults()
+  }
+
   // Recovers and transfers slashed funds
   @call({})
   recover({ amount, target }: { amount: string, target: string }): void {
@@ -201,6 +183,55 @@ class DonationContract {
     }
   }
 
+  // Views all registered databases
+  @view({})
+  databases(): Array<Manifest> {
+    let dbs: Array<Manifest> = new Array()
+    for ( let [_, v] of this.db_manifests) {
+      dbs.push(v as Manifest)
+    }
+    return dbs
+  }
+
+  // Views own registered databases
+  @view({})
+  ownDatabases({owner}: {owner: string}): Array<Manifest> {
+    let dbs: Array<Manifest> = new Array()
+    for ( let [k, v] of this.db_owners) {
+      if (owner !== v as string) {
+        continue
+      }
+      let m = this.db_manifests.get(k as string)
+      dbs.push(m as Manifest)
+    }
+    return dbs
+  }
+
+  // Views all registered API endpoints for a database
+  @view({})
+  discover({ dbid }: { dbid: string }): Array<string> {
+    assert(parseInt(dbid) < this.next_id, "Database id does not exist")
+    let uris: Array<string> = new Array()
+    for (let [k, v] of this.db_api_registry) {
+        let key = k as string
+        if (!key.startsWith(dbid + "#")) {
+          continue
+        }
+        uris.push(v as string)
+    }
+    return uris
+  }
+
+  // Views own earnings
+  @view({})
+  earned({owner}: {owner: string}): string {
+    // sum settled caller fees and royalties
+    let earnedFees = BigInt(this.db_settled_fees.get(owner) as string || '0')
+    let earnedRoyalties = BigInt(this.db_settled_royalties.get(owner) as string || '0')
+    let totalEarned = earnedFees + earnedRoyalties
+    return totalEarned.toString()
+  }
+
   internalSplitFeeOrSlash(
     { dbid,
       votes,
@@ -208,7 +239,7 @@ class DonationContract {
       royalty_bips
     } : {
       dbid: string,
-      votes: UnorderedMap,
+      votes: Map<string, string>,
       feeToSplit: bigint,
       royalty_bips: bigint
   }) {
@@ -245,7 +276,7 @@ class DonationContract {
       for (let vote of winners) {
           let newFee = BigInt(this.db_settled_fees.get(vote.account_id) as string || '0')
           newFee += feeToShare
-          this.db_settled_fees.set(vote.account_id, newFee)
+          this.db_settled_fees.set(vote.account_id, newFee.toString())
           feeToSplit -= feeToShare
       }
 
@@ -255,10 +286,10 @@ class DonationContract {
       // slash minority
       let offenders = election.minority()
       if (offenders.length > 0) {
-        let deposits = this.db_deposits.get(dbid) as LookupMap
         for (let vote of offenders) {
             // calculate how much deposit to slash
-            let deposit = BigInt(deposits.get(vote.account_id) as string || '0')
+            let key = makekey(dbid, vote.account_id)
+            let deposit = BigInt(this.db_deposits.get(key) as string || '0')
             let amountToSlash = deposit * 10000n / SLASHED_DEPOSIT_BIPS
 
             // add to slashed
@@ -266,7 +297,7 @@ class DonationContract {
 
             // sub from deposit
             deposit -= amountToSlash
-            deposits.set(vote.account_id, deposit.toString())
+            this.db_deposits.set(key, deposit.toString())
         }
       }
 
@@ -289,38 +320,42 @@ class DonationContract {
     // - slash offenders
     let height = near.blockIndex()
 
+    let expired: Map<string, Map<string, string>> = new Map()
+
     // scan all databases for expired results
     for (let [k, v] of this.db_ttls) {
-      let dbid = k as string
-      let ttls = v as UnorderedMap
+      let key = k as string
+      let [dbid, qid] = splitkey(key)
+      let ttl = v as number
+
+      // skip results that did not yet reach their ttl
+      if (ttl > height) {
+        continue
+      }
+      let votes = scanmap(this.db_pending_votes, makekey(dbid, qid, ''))
+      expired.set(key, votes)
+    }
+
+    for (let [k, v] of expired) {
+      let [dbid, qid] = splitkey(k as string)
+      let votes = v as Map<string, string>
+
       let manifest = this.db_manifests.get(dbid) as Manifest
       let royalty_bips = BigInt(manifest.royalty_bips)
 
-      // scan results for expiry
-      for (let [k, ttl] of ttls) {
-        let qid = k as string
-        let ttl = v as number
+      // fetch fee paid for this query; this assumes the fee payment transaction
+      // was actually sent before TTL expired
+      let fee = this.db_pending_fees.get(k)
+      let feeToSplit = BigInt(fee as string || '0')
 
-        // skip results that did not yet reach their ttl
-        if (ttl > height) {
-          continue
-        }
+      // check result votes, pay fees and optionally slash offenders
+      this.internalSplitFeeOrSlash({ dbid, votes, feeToSplit, royalty_bips })
 
-        // fetch fee paid for this query; this assumes the fee payment transaction
-        // was actually sent before TTL expired
-        let fees = this.db_pending_fees.get(dbid) as LookupMap
-        let results = this.db_pending_results.get(dbid) as UnorderedMap
-        let votes = results.get(qid) as UnorderedMap
-        let feeToSplit = BigInt(fees.get(qid) as string || '0')
-
-        // check result votes, pay fees and optionally slash offenders
-        this.internalSplitFeeOrSlash({ dbid, votes, feeToSplit, royalty_bips })
-
-        // clean up maps
-        fees.remove(qid)
-        results.remove(qid)
-        ttls.remove(qid) // FIXME: check this is ok in this loop
-
+      // clean up maps
+      this.db_pending_fees.remove(k)
+      this.db_ttls.remove(k)
+      for ( [k] of votes ) {
+        this.db_pending_votes.remove(k)
       }
     }
   }

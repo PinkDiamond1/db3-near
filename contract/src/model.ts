@@ -1,5 +1,5 @@
 export const STORAGE_COST: bigint = BigInt("1000000000000000000000000") // 1 NEAR
-export const SECURITY_DEPOSIT: bigint = BigInt("10000000000000000000000000000") // 10000 NEAR
+export const SECURITY_DEPOSIT: bigint = BigInt("10000000000000000000000000") // 10 NEAR
 export const SLASHED_DEPOSIT_BIPS: bigint = 2500n // 25% per offence
 export const MAX_BLOCKS_TO_SETTLE: bigint = 120n // 120 blocks ~ 2min
 
