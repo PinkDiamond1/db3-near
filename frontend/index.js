@@ -20,7 +20,6 @@ window.onload = async () => {
 };
 
 // Button clicks
-document.querySelector('form').onsubmit = doUserAction;
 document.querySelector('#sign-in-button').onclick = () => { wallet.signIn(); };
 document.querySelector('#sign-out-button').onclick = () => { wallet.signOut(); }; 
 
