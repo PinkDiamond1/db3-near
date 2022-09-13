@@ -97,7 +97,7 @@ a:focus,
 .link:hover,
 .link:focus {
   text-decoration: none;
-  color: blue;
+  color: var(--secondary);
 }
 a:active,
 .link:active {
