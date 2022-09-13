@@ -12,6 +12,7 @@ html {
   --success: rgb(90, 206, 132);
   --primary: #2c106a;
   --secondary: #0072ce;
+  --invert: #000;
 
   background-color: var(--bg);
   color: var(--fg);
@@ -66,7 +67,7 @@ div.wrap {
  a:hover div.wrap {
   display: block;
   background-color: var(--light-gray);
-  color: var(--primary);
+  color: var(--invert);
   text-decoration: none;
 }
 
@@ -360,6 +361,7 @@ li {
     --gray: #aaa;
     --shadow: #2a2a2a;
     --light-gray: #444;
+    --invert: #fff;
   }
   h1 {
     background-image: url(./logo-light.svg);
