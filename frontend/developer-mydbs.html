@@ -1,100 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="assets/favicon.ico" />
-    <link rel="apple-touch-icon" href="assets/favicon.ico" />
-    <title>DB3 | Developer | My Databases</title>
-    <link rel="stylesheet" href="assets/global.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
-  </head>
-  <body>
-    <main id="signed-out-flow" style="display: none">
-      <div id="btn">
-        <button id="sign-in-button">Sign in with NEAR</button>
-      </div>
-      <h1></h1>
-      <h2>🪄 MVP: Decentralized Database on NEAR</h2>
-      <div class="wrap">
-        <h3>👩‍💻 Developers</h3>
-        <p>Write <strong>Database Schema</strong> and <strong>ETL logic</strong> code and <strong>publish</strong> them on-chain using a custom DB3 smart contract in which only the CID of the bundle is stored.</p>
-      </div>
-      <div class="wrap">
-        <h3>🌐 Hosts</h3>
-        <p>Choose which <strong>databases</strong> you're interested to host. Pay a security <strong>deposit</strong> and <strong>register</strong> their API endpoints on-chain. Utilize DB3 nodes to launch and sync databases.</p>
-      </div>
-      <div class="wrap">
-        <h3>👤 Users</h3>
-        <p><strong>Discover</strong> API endpoints for <strong>databases</strong> you're interested in. <strong>Sign</strong> queries with an attached <strong>fee payments</strong> and send them to selected hosts for execution.</p>
-      </div>
-      <div class="footer">
-        <footer>
-          <div class="social">
-            <a href="#">
-              <i data-feather="twitter"></i>
-            </a>
-            <a href="https://github.com/blockwatch-cc/db3-near">
-              <i data-feather="github"></i>
-            </a>
-          </div>
-          <p class="copyright">Built with ☕ and passion by BWD 2022</p>
-        </footer>
-      </div>
-    </main>
-        <main id="signed-in-flow" style="display: none">
-      <button class="floated" style="margin-top: 1.5em;" id="sign-out-button"> Sign out <span data-behavior="account-id"></span></button>
-      <a href="developer-mydbs.html"><button class="floated" style="margin-top: 1.4em; background-color: darkblue; border: 2px solid #4caf50;">My DBs</button></a>
-      <a href="developer.html"><button class="floated" style="margin-top: 1.5em; background-color: darkblue;">Create DB</button></a>
-      <a href="index.html"><button class="floated" style="margin-top: 1.5em;">< Home</button></a>
-      <h1>Developer: My Databases</h1>
-           <table class="dataTable">
-        <thead>
-          <tr>
-            <th>Author</th>
-            <th>Name</th>
-            <th>License</th>
-            <th>CID</th>
-            <th>Royalties</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <a href="#">lisboa.near</a>
-            </td>
-            <td>Conf Attendees</td>
-            <td>CC BY 4.0 X</td>
-            <td>QmXgCtBcx9</td>
-            <td>1%</td>
-            <td>
-              <button class="button action">Claim Royalties</button>
-            </td>
-          </tr>
-       </tbody>
-      </table>
-      <div class="footer">
-        <footer>
-          <div class="social">
-            <a href="#">
-              <i data-feather="twitter"></i>
-            </a>
-            <a href="https://github.com/blockwatch-cc/db3-near">
-              <i data-feather="github"></i>
-            </a>
-          </div>
-          <p class="copyright">Built with ☕ and passion by BWD 2022</p>
-        </footer>
-      </div>
-    </main>
-    </div>
-    <script>
-      feather.replace()
-    </script>
-    <script src="index.js" type="module"></script>
-  </body>
-</html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" href="assets/favicon.ico" />
+	<link rel="apple-touch-icon" href="assets/favicon.ico" />
+	<title>DB3 | Developer | My Databases</title>
+	<link rel="stylesheet" href="assets/global.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+
+<body>
+	<main id="signed-out-flow" style="display: none">
+		<div id="btn">
+			<button id="sign-in-button">Sign in with NEAR</button>
+		</div>
+		<h1></h1>
+		<h2>🪄 MVP: Decentralized Database on NEAR</h2>
+		<div class="wrap">
+			<h3>👩‍💻 Developers</h3>
+			<p>Write <strong>Database Schema</strong> and <strong>ETL logic</strong> code and <strong>publish</strong> them on-chain using a custom DB3 smart contract in which only the CID of the bundle is stored. </p>
+		</div>
+		<div class="wrap">
+			<h3>🌐 Hosts</h3>
+			<p>Choose which <strong>databases</strong> you're interested to host. Pay a security <strong>deposit</strong> and <strong>register</strong> their API endpoints on-chain. Utilize DB3 nodes to launch and sync databases. </p>
+		</div>
+		<div class="wrap">
+			<h3>👤 Users</h3>
+			<p> <strong>Discover</strong> API endpoints for <strong>databases</strong> you're interested in. <strong>Sign</strong> queries with an attached <strong>fee payments</strong> and send them to selected hosts for execution. </p>
+		</div>
+		<div class="footer">
+			<footer>
+				<div class="social">
+					<a href="#"> <i data-feather="twitter"></i> </a>
+					<a href="https://github.com/blockwatch-cc/db3-near"> <i data-feather="github"></i> </a>
+				</div>
+				<p class="copyright">Built with ☕ and passion by BWD 2022</p>
+			</footer>
+		</div>
+	</main>
+	<main id="signed-in-flow" style="display: none">
+		<button class="floated" style="margin-top: 1.5em;" id="sign-out-button"> Sign out <span data-behavior="account-id"></span> </button>
+		<a href="developer-mydbs.html">
+			<button class="floated" style="margin-top: 1.4em; background-color: darkblue; border: 2px solid #4caf50;">My DBs</button>
+		</a>
+		<a href="developer.html">
+			<button class="floated" style="margin-top: 1.5em; background-color: darkblue;">Create DB</button>
+		</a>
+		<a href="index.html">
+			<button class="floated" style="margin-top: 1.5em;">
+				< Home </button>
+		</a>
+		<h1>Developer: My Databases</h1>
+		<table class="dataTable">
+			<thead>
+				<tr>
+					<th>Author</th>
+					<th>Name</th>
+					<th>License</th>
+					<th>CID</th>
+					<th>Royalties</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td> <a href="#">lisboa.near</a> </td>
+					<td>Conf Attendees</td>
+					<td>CC BY 4.0 X</td>
+					<td>QmXgCtBcx9</td>
+					<td>1%</td>
+					<td>
+						<button class="button action">Claim Royalties</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="footer">
+			<footer>
+				<div class="social">
+					<a href="#"> <i data-feather="twitter"></i> </a>
+					<a href="https://github.com/blockwatch-cc/db3-near"> <i data-feather="github"></i> </a>
+				</div>
+				<p class="copyright">Built with ☕ and passion by BWD 2022</p>
+			</footer>
+		</div>
+	</main>
+	</div>
+	<script>
+	feather.replace()
+	</script>
+	<script src="index.js" type="module"></script>
+</body>
+</html
