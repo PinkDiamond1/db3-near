@@ -6,11 +6,13 @@ import '@near-wallet-selector/modal-ui/styles.css';
 import { setupModal } from '@near-wallet-selector/modal-ui';
 import LedgerIconUrl from '@near-wallet-selector/ledger/assets/ledger-icon.png';
 import MyNearIconUrl from '@near-wallet-selector/my-near-wallet/assets/my-near-wallet-icon.png';
+import NearWalletIconUrl from '@near-wallet-selector/near-wallet/assets/near-wallet-icon.png';
 
 // wallet selector options
 import { setupWalletSelector } from '@near-wallet-selector/core';
 import { setupLedger } from '@near-wallet-selector/ledger';
 import { setupMyNearWallet } from '@near-wallet-selector/my-near-wallet';
+import { setupNearWallet } from "@near-wallet-selector/near-wallet";
 
 const THIRTY_TGAS = '30000000000000';
 const NO_DEPOSIT = '0';
@@ -31,6 +33,7 @@ export class Wallet {
     this.walletSelector = await setupWalletSelector({
       network: 'testnet',
       modules: [setupMyNearWallet({ iconUrl: MyNearIconUrl }),
+      	 setupNearWallet({ iconUrl: NearWalletIconUrl }),
         setupLedger({ iconUrl: LedgerIconUrl })],
     });
 
