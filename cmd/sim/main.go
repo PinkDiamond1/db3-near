@@ -155,7 +155,6 @@ func run() error {
         "ttl":  strconv.FormatInt(ttl+height, 10),
     })
 
-    // account := account.NewAccount(config, accountId)
     _, signedTx, err := account.SignTransaction(contractAddress, []near.Action{{
         Enum: 2,
         FunctionCall: near.FunctionCall{
