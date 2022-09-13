@@ -26,6 +26,38 @@ func TestUnanimousVote(t *testing.T) {
     }, "super majority members match")
 }
 
+func TestMajority1(t *testing.T) {
+    e := NewElection()
+    e.AddVote("A", "cid-1")
+    assert.True(t, e.IsUnanimous(), "is not unanimous")
+    assert.True(t, e.IsSuperMajority(), "is super majority")
+    assert.Equal(t, e.NumSuperMajority(), 1, "super majority count")
+    assert.Equal(t, e.NumVoters(), 1, "voter count")
+    assert.Len(t, e.SuperMajority(), 1, "super majority size matches two voters")
+    assert.Len(t, e.Minority(), 0, "minority count")
+    assert.ElementsMatch(t, e.SuperMajority(), []Vote{
+        {"A", "cid-1"},
+    }, "super majority members match")
+    assert.Empty(t, e.Minority(), "minority members match")
+}
+
+func TestMajority2(t *testing.T) {
+    e := NewElection()
+    e.AddVote("A", "cid-1")
+    e.AddVote("B", "cid-1")
+    assert.True(t, e.IsUnanimous(), "is not unanimous")
+    assert.True(t, e.IsSuperMajority(), "is super majority")
+    assert.Equal(t, e.NumSuperMajority(), 2, "super majority count")
+    assert.Equal(t, e.NumVoters(), 2, "voter count")
+    assert.Len(t, e.SuperMajority(), 2, "super majority size matches two voters")
+    assert.Len(t, e.Minority(), 0, "minority count")
+    assert.ElementsMatch(t, e.SuperMajority(), []Vote{
+        {"A", "cid-1"},
+        {"B", "cid-1"},
+    }, "super majority members match")
+    assert.Empty(t, e.Minority(), "minority members match")
+}
+
 func TestMajority3(t *testing.T) {
     e := NewElection()
     e.AddVote("A", "cid-1")

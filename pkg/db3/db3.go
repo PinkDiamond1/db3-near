@@ -207,7 +207,7 @@ func (d *DB3) Recover(amount near.Money, target near.AccountID) {
         panic("Must be contract owner to recover funds")
     }
     if d.Slashed < amount {
-        panic("Amount is smaller than available funds")
+        panic("Amount is larger than available funds")
     }
     d.Slashed -= amount
     near.TransferTo(target, amount, signer)
