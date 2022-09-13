@@ -85,6 +85,7 @@ a:hover div.wrap {
 #btn {
   text-align: right;
   float: right;
+  margin-top: 1.5em;
 }
 
 a,
