@@ -53,18 +53,18 @@ div.wrap {
 }
 
 .floated {
-   float:right;
-   margin-right:5px;
+  float: right;
+  margin-right: 5px;
 }
 
- a div.wrap {
+a div.wrap {
   display: block;
   background-color: var(--card);
   text-decoration: none;
   color: var(--gray);
 }
 
- a:hover div.wrap {
+a:hover div.wrap {
   display: block;
   background-color: var(--light-gray);
   color: var(--invert);
@@ -89,7 +89,6 @@ h2 {
 h3 {
   color: var(--primary);
 }
-
 
 ul.information {
   margin: 2em 0 2em 0;
@@ -123,20 +122,10 @@ a:active,
   color: var(--primary);
 }
 
-
 button,
 input {
   font: inherit;
   outline: none;
-}
-
-main.please-wait .change button {
-  position: relative;
-  pointer-events: none;
-  background-color: white;
-}
-main.please-wait .change button span {
-  visibility: hidden;
 }
 
 button {
@@ -154,22 +143,22 @@ button:focus {
 }
 
 #contactform {
-    display: grid;
-    grid-template-columns: 15% 85%;
-    
+  display: grid;
+  grid-template-columns: 15% 85%;
 }
 
 #contactform p {
-    grid-column: 1 / 3;
-    margin: 10px 0 5px 0;
+  grid-column: 1 / 3;
+  margin: 10px 0 5px 0;
 }
 
 #contactform button {
-    grid-column: 2 / 3;
-    width: 110px;
+  grid-column: 2 / 3;
+  width: 110px;
+  margin-top: 0.2em;
 }
 
-#contactform label[for="authorid"], 
+#contactform label[for="authorid"],
 #contactform label[for="dbname"],
 #contactform label[for="license"],
 #contactform label[for="cid"],
@@ -177,21 +166,25 @@ button:focus {
 #contactform input[type="radio"],
 #contactform input[type="checkbox"],
 #contactform label[for="comments"] {
-    justify-self: end;
-    align-self: center;
+  justify-self: end;
+  align-self: center;
+}
+
+input.right {
+  float: right;
 }
 
 #contactform input {
-    margin: 5px 0;
+  margin: 5px 0;
 }
 
 #contactform label {
-    margin: 4px 10px;
+  margin: 4px 10px;
 }
 
 #contactform textarea {
-    margin: 20px 0;
-    height: 50px;
+  margin: 20px 0;
+  height: 50px;
 }
 
 input {
