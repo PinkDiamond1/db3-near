@@ -71,7 +71,13 @@ func run() error {
         return err
     }
 
-    // ctx := context.Background()
+    if accountId == "" {
+        return fmt.Errorf("Empty account id")
+    }
+    if contractAddress == "" {
+        return fmt.Errorf("Empty contract id")
+    }
+
     conn = near.NewConnection(rpcEndpoint)
 
     // Use a key pair directly as a signer.

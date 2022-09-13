@@ -97,6 +97,9 @@ func run() error {
     if accountId == "" {
         return fmt.Errorf("Empty account id")
     }
+    if contractAddress == "" {
+        return fmt.Errorf("Empty contract id")
+    }
 
     conn := near.NewConnection(rpcEndpoint)
 
