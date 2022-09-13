@@ -3,3 +3,4 @@ frontend/dist/*
 frontend/.parcel-cache
 node_modules
 contract/build/*
+vendor/

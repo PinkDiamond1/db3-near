@@ -127,15 +127,13 @@ class Db3Contract {
     let ttlval = this.db_ttls.get(ttlkey)
     let ttl: bigint
     if (!ttlval) {
-      near.log("TTL: missing entry, using default")
       ttl = near.blockIndex() + MAX_BLOCKS_TO_SETTLE
       this.db_ttls.set(ttlkey, ttl.toString())
     } else {
       ttl = BigInt(ttlval as string);
-      near.log("TTL: loaded ttl", ttl)
     }
-    near.log("TTL: ttl=", ttl, "block=", near.blockIndex())
-    assert(ttl > near.blockIndex(), "Settlement timed out")
+    let height = near.blockIndex()
+    assert(ttl > height, `Settlement timed out ${ttlval} <= ${height}`)
 
     // allocate sub map when this is the first call for this query
     let votekey = makekey(dbid, qid, caller)
