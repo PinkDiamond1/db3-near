@@ -15,20 +15,20 @@ DB3 is a decentralized web3 database network where service providers get paid fo
 The DB3 on-chain protocol organizes fee payments and helps establish trust in query results. Fraudulent behaviour and censorship is discouraged by requiring hosts to post a security deposit that may be slashed if query results differ.
 
 * **Developers** write database schema and ETL logic code and `publish` them on-chain using a custom DB3 smart contract (only the CID of the bundle is stored)
-* **Hosts** choose which databases they are interested to host, then pay a security `deposit` and `register` their API endpoints on-chain; they utilize DB3 nodes to launch and sync databases; the node keeps databases in sync by pulling and validating data from **trusted ingest sources** (out of scope for this hackathon)
+* **Hosts** choose which databases they are interested to host, then pay a security `deposit` and `register` their API endpoints on-chain. Hosts utilize DB3 nodes to launch and sync databases. The node keeps databases in sync by pulling and validating data from **trusted ingest sources** (this is out of scope for this hackathon)
 * **Users** first `discover` API endpoints for databases they are interested in, then `sign` queries with attached **fee payments** and send them to selected hosts for execution
 * After hosts have executed a query, they (1) `sign` the result, (2) return it to the user immediately (to ensure low latency), and (3) `settle` the fee and result with the database contract
 * The database contract can split fees between hosts and developers who can `claim` payouts
 
 Design choices for on-chain functions `deposit`, `register`, `settle`, and `claim`:
 
-1. API registry, deposits, database content, and fee settlement can be organized into a single **combined** contract or **split** across multiple collaborating contracts.
+1. API registry, deposits, database content, and fee settlement can be organized in a single **combined** smart contract or **split** across multiple collaborating contracts.
 2. On-chain database state can be **shared** (one set of contracts shared by all published databases) or **private** (one set of contracts that is private for each database).
 
 
-## Howto run
+## How to run
 
-As prerequisite create a testnet wallet on https://wallet.testnet.near.org/ and install the Near CLI tools `npm install -g near-cli`. Replace the Near testnet account below with your own.
+Create a testnet wallet on https://wallet.testnet.near.org/ and install the NEAR CLI tools via `npm install -g near-cli`. Replace the NEAR testnet account below with your own.
 
 ```sh
 # login to your testnet account
