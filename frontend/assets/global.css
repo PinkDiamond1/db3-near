@@ -8,6 +8,8 @@ html {
   --card: #f8f8f8;
   --gray: #555;
   --light-gray: #ccc;
+  --activebutton: #00008B;
+  --activeborder: #4caf50;
   --shadow: #e6e6e6;
   --success: rgb(90, 206, 132);
   --primary: #2c106a;
@@ -358,6 +360,8 @@ li {
     --gray: #aaa;
     --shadow: #2a2a2a;
     --light-gray: #444;
+    --activebutton: #3333A2;
+    --activeborder: #4caf50;
     --invert: #fff;
   }
   h1 {
