@@ -1,6 +1,6 @@
-# DB3 - decentralized database
+# DB3 - Decentralized Database on NEAR
 
-A NEARCON 2022 Hackathon project by [Blockwatch Data Inc](https://blockwatch.cc/)
+A [NEARCON](https://nearcon.org) 2022 Hackathon project by [Blockwatch Data Inc](https://blockwatch.cc)
 
 ## Intro
 
