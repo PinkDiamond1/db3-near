@@ -36,9 +36,6 @@ main {
   max-width: 42em;
 }
 
-main.please-wait {
-}
-
 h1 {
   background-image: url(./logo-light.svg);
   background-position: left 1em;
@@ -48,6 +45,14 @@ h1 {
   padding: 3.5em 0 0;
   text-align: center;
   font-size: 1.5em;
+}
+
+h2 {
+  text-align: left;
+}
+
+h3 {
+  color: var(--primary);
 }
 
 div.wrap {
@@ -79,31 +84,7 @@ a:hover div.wrap {
 
 #btn {
   text-align: right;
-  margin-top: 1.5em;
   float: right;
-}
-
-h2 {
-  text-align: left;
-}
-
-h3 {
-  color: var(--primary);
-}
-
-ul.information {
-  margin: 2em 0 2em 0;
-  padding: 0;
-  text-align: left;
-  font-size: 0.8em;
-}
-.information li:first-child {
-  border-top: 1px solid var(--light-gray);
-}
-.information li {
-  padding: 0.5em 0;
-  border-bottom: 1px solid var(--light-gray);
-  list-style: none;
 }
 
 a,
