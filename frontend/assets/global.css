@@ -9,15 +9,15 @@ html {
   --gray: #555;
   --light-gray: #bbb;
   --table-divider: #ccc;
+  --table-secondary: #ddd;
   --activebutton: #00008B;
   --activeborder: #4caf50;
   --shadow: #e6e6e6;
-  --success: rgb(90, 206, 132);
+  --success: #5ace85;
   --primary: #2c106a;
   --secondary: #0072ce;
-  --white: #fff;
-  --black: #000;
-  --hover: #dedede;
+  --invert: #222;
+  --hover: #eee;
 
   background-color: var(--bg);
   color: var(--fg);
@@ -66,7 +66,7 @@ a div.wrap {
   display: block;
   background-color: var(--card);
   text-decoration: none;
-  color: var(--black);
+  color: var(--invert);
 }
 
 a:hover div.wrap {
@@ -143,30 +143,30 @@ button:focus {
   box-shadow: 0 0 10em rgba(255, 255, 255, 0.2) inset;
 }
 
-#contactform {
+#form {
   display: grid;
   grid-template-columns: 15% 85%;
 }
 
-#contactform p {
+#form p {
   grid-column: 1 / 3;
   margin: 10px 0 5px 0;
 }
 
-#contactform button {
+#form button {
   grid-column: 2 / 3;
   width: 110px;
   margin-top: 0.2em;
 }
 
-#contactform label[for="authorid"],
-#contactform label[for="dbname"],
-#contactform label[for="license"],
-#contactform label[for="cid"],
-#contactform label[for="royalty"],
-#contactform input[type="radio"],
-#contactform input[type="checkbox"],
-#contactform label[for="comments"] {
+#form label[for="authorid"],
+#form label[for="dbname"],
+#form label[for="license"],
+#form label[for="cid"],
+#form label[for="royalty"],
+#form input[type="radio"],
+#form input[type="checkbox"],
+#form label[for="comments"] {
   justify-self: end;
   align-self: center;
 }
@@ -175,15 +175,15 @@ input.right {
   float: right;
 }
 
-#contactform input {
+#form input {
   margin: 5px 0;
 }
 
-#contactform label {
+#form label {
   margin: 4px 10px;
 }
 
-#contactform textarea {
+#form textarea {
   margin: 20px 0;
   height: 50px;
 }
@@ -304,7 +304,7 @@ li {
 
 .dataTable th {
   text-align: left;
-  background: rgba(0, 0, 0, 0.14);
+  background: var(--light-gray);
   border-bottom: 1px solid #aaa;
 }
 
@@ -317,7 +317,7 @@ li {
 }
 
 .dataTable tr:nth-child(odd) {
-  background: rgba(0, 0, 0, 0.07);
+  background: var(--table-secondary);
 }
 
 @media screen and (min-width: 50em) {
@@ -354,7 +354,7 @@ li {
   html {
     --bg: #1e1e1e;
     --fg: #efefef;
-    --card: #222;
+    --card: #333;
     --gray: #aaa;
     --light-gray: #444;
     --table-divider: #333;
@@ -363,10 +363,8 @@ li {
     --shadow: #2a2a2a;
     --primary: #7cb9e8;
     --secondary: #0072ce;
-    --white: #fff;
-    --black: #000;
-    --invert: #fff;
-    --hover: #dedede;
+    --invert: #ddd;
+    --hover: #222;
   }
   h1 {
     background-image: url(./logo-dark.svg);
