@@ -1,6 +1,6 @@
 {
-  "name": "my-near-app",
-  "version": "1.0.0",
+  "name": "db3-near",
+  "version": "0.0.1",
   "license": "(MIT AND Apache-2.0)",
   "scripts": {
     "start": "./start.sh",
