@@ -50,72 +50,21 @@
       <a href="developer-mydbs.html"><button class="floated" style="margin-top: 1.5em; background-color: darkblue;">My DBs</button></a>
       <a href="index.html"><button class="floated" style="margin-top: 1.5em;">< Home</button></a>
       <h1>Developer: Create New Database</h1>
-      <div class="row">
-  <form class="col s12">
-    <div class="row">
-      <div class="input-field col s12">
-        <input placeholder="Event title" id="title" type="text" class="validate">
-        <label for="title">Title</label>
-      </div>
-    </div>
-    <div class="row">
-      <div class="input-field col s6">
-        <select>
-          <option value="" disabled selected>Choose event type</option>
-          <option value="1">Option 1</option>
-          <option value="2">Option 2</option>
-          <option value="3">Option 3</option>
-        </select>
-        <label>Event type</label>
-      </div>
-      <div class="input-field col s6">
-        <select multiple>
-          <option value="" disabled selected>Choose style(s)</option>
-          <option value="1">Option 1</option>
-          <option value="2">Option 2</option>
-          <option value="3">Option 3</option>
-        </select>
-        <label>Styles</label>
-      </div>
-    </div>
+			<form id="contactform" name="contactform" method="post" action="#">
+            <label for="authorid">Author ID</label>
+            <input id="authorid" name="authorid" type="text" required>
+            <label for="dbname">DB Name</label>
+            <input id="dbname" name="dbname" type="text" required>
+            <label for="license">License</label>
+            <input id="license" name="license" type="text" required>
+            <label for="cid">Content ID</label>
+            <input id="cid" name="cid" type="text" required>
+            <label for="royalty">Royalty (%)</label>
+            <input id="royalty" name="royalty" type="number" required>            
+            <button type="submit">Create</button>
 
-    <div class="row">
-      <div class="input-field col s6">
-        <label>Begin date</label>
-        <input id="beginDate" type="date" class="datepicker">
-        
-      </div>
-      <div class="input-field col s6">
-        <label>End date</label>
-        <input id="endDate" type="date" class="datepicker">
-        
-      </div>
-    </div>
-    <div class="row">
-      <div class="input-field col s12">
-        <input placeholder="Who is organizing the event?" id="organizer" type="text" class="validate">
-        <label for="organizer">Organizer</label>
-      </div>
-    </div>
-    <div class="row">
-      <div class="input-field col s6">
-        <input placeholder="http://www.mywebsite.com" id="website" type="text" class="validate">
-        <label for="website">Website</label>
-      </div>
-      <div class="input-field col s6">
-        <input placeholder="contact@myweb.com" id="email" type="text" class="validate">
-        <label for="email">Contact email</label>
-      </div>
-    </div>
+        </form>      
 
-    <div class="row">
-          <div class="input-field col s12">
-            <textarea id="description" class="materialize-textarea" length="140"></textarea>
-            <label for="description">Describe the event in a tweet!</label>
-          </div>
-        </div>
-  </form>
-</div>
       <div class="footer">
         <footer>
           <div class="social">
