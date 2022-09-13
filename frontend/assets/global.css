@@ -35,7 +35,7 @@ main.please-wait {
 }
 
 h1 {
-  background-image: url(./logo-dark.svg);
+  background-image: url(./logo-light.svg);
   background-position: left 1em;
   background-repeat: no-repeat;
   background-size: auto 1.5em;
@@ -361,7 +361,7 @@ li {
     --invert: #fff;
   }
   h1 {
-    background-image: url(./logo-light.svg);
+    background-image: url(./logo-dark.svg);
   }
 }
 
