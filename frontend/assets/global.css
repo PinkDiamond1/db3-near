@@ -12,6 +12,7 @@ html {
   --success: rgb(90, 206, 132);
   --primary: #2c106a;
   --secondary: #0072ce;
+  --invert: #000;
 
   background-color: var(--bg);
   color: var(--fg);
@@ -44,11 +45,30 @@ h1 {
   font-size: 1.5em;
 }
 
-#wrap {
+div.wrap {
   border: 2px solid #bbb;
   background-color: var(--card);
   padding: 0.5em;
   margin-bottom: 0.5em;
+}
+
+.floated {
+   float:right;
+   margin-right:5px;
+}
+
+ a div.wrap {
+  display: block;
+  background-color: var(--card);
+  text-decoration: none;
+  color: var(--gray);
+}
+
+ a:hover div.wrap {
+  display: block;
+  background-color: var(--light-gray);
+  color: var(--invert);
+  text-decoration: none;
 }
 
 #btn {
@@ -70,9 +90,6 @@ h3 {
   color: var(--primary);
 }
 
-.please-wait .change {
-  pointer-events: none;
-}
 
 ul.information {
   margin: 2em 0 2em 0;
@@ -89,38 +106,6 @@ ul.information {
   list-style: none;
 }
 
-.change {
-  display: flex;
-  flex-direction: column;
-  align-content: stretch;
-  justify-content: space-evenly;
-  align-items: stretch;
-  font-size: 1em;
-  border: 2px solid var(--light-gray);
-  padding: 0.5em;
-}
-.change > div {
-  display: flex;
-  align-content: stretch;
-  justify-content: space-evenly;
-  align-items: stretch;
-}
-.change input {
-  flex: 1;
-  border-bottom-right-radius: 0;
-  border-top-right-radius: 0;
-}
-.change label {
-  display: block;
-  text-align: left;
-  margin-right: 10px;
-  padding-bottom: 0.5em;
-}
-.change button {
-  border-bottom-left-radius: 0;
-  border-top-left-radius: 0;
-}
-
 a,
 .link {
   color: var(--primary);
@@ -130,7 +115,7 @@ a:hover,
 a:focus,
 .link:hover,
 .link:focus {
-  text-decoration: underline;
+  text-decoration: none;
   color: blue;
 }
 a:active,
@@ -138,8 +123,6 @@ a:active,
   color: var(--primary);
 }
 
-footer {
-}
 
 button,
 input {
@@ -168,6 +151,47 @@ button {
 button:hover,
 button:focus {
   box-shadow: 0 0 10em rgba(255, 255, 255, 0.2) inset;
+}
+
+#contactform {
+    display: grid;
+    grid-template-columns: 15% 85%;
+    
+}
+
+#contactform p {
+    grid-column: 1 / 3;
+    margin: 10px 0 5px 0;
+}
+
+#contactform button {
+    grid-column: 2 / 3;
+    width: 110px;
+}
+
+#contactform label[for="authorid"], 
+#contactform label[for="dbname"],
+#contactform label[for="license"],
+#contactform label[for="cid"],
+#contactform label[for="royalty"],
+#contactform input[type="radio"],
+#contactform input[type="checkbox"],
+#contactform label[for="comments"] {
+    justify-self: end;
+    align-self: center;
+}
+
+#contactform input {
+    margin: 5px 0;
+}
+
+#contactform label {
+    margin: 4px 10px;
+}
+
+#contactform textarea {
+    margin: 20px 0;
+    height: 50px;
 }
 
 input {
@@ -341,12 +365,10 @@ li {
     --gray: #aaa;
     --shadow: #2a2a2a;
     --light-gray: #444;
+    --invert: #fff;
   }
   h1 {
     background-image: url(./logo-light.svg);
-  }
-  input:focus {
-    box-shadow: 0 0 10em rgba(255, 255, 255, 0.02) inset;
   }
 }
 

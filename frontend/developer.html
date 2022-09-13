@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="assets/favicon.ico" />
     <link rel="apple-touch-icon" href="assets/favicon.ico" />
-    <title>DB3 | Discover</title>
+    <title>DB3 | Developer | Create Database</title>
     <link rel="stylesheet" href="assets/global.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,7 +25,7 @@
       </div>
       <div class="wrap">
         <h3>🌐 Hosts</h3>
-        <p>Choose which <strong>databases</strong> you're interested to host. Pay a security <strong>deposit</strong> and <strong>register</strong> API endpoints on-chain. Utilize DB3 nodes to launch and sync databases.</p>
+        <p>Choose which <strong>databases</strong> you're interested to host. Pay a security <strong>deposit</strong> and <strong>register</strong> their API endpoints on-chain. Utilize DB3 nodes to launch and sync databases.</p>
       </div>
       <div class="wrap">
         <h3>👤 Users</h3>
@@ -45,29 +45,26 @@
         </footer>
       </div>
     </main>
-    <main id="signed-in-flow" style="display: none">
-      <button style="margin-top: 1.5em; float: right" id="sign-out-button"> Sign out <span data-behavior="account-id"></span>
-      </button>
-      <h1></h1>
-      <h2>Choose Your Role</h2>
-      <a href="developer.html">
-      <div class="wrap">
-        <h3>👩‍💻 Developer</h3>
-        <p> Write <strong>Database Schema</strong> and <strong>ETL logic</strong> code and <strong>publish</strong> them on-chain using a custom DB3 smart contract in which only the CID of the bundle is stored.</p>
-      </div>
-      </a>
-      <a href="host.html">
-      <div class="wrap">
-        <h3>🌐 Host</h3>
-        <p>Choose which <strong>databases</strong> you're interested to host. Pay a security <strong>deposit</strong> and <strong>register</strong> API endpoints on-chain. Utilize DB3 nodes to launch and sync databases.</p>
-      </div>
-      </a>
-      <a href="user.html">
-      <div class="wrap">
-        <h3>👤 User</h3>
-        <p><strong>Discover</strong> API endpoints for <strong>databases</strong> you're interested in. <strong>Sign</strong> queries with an attached <strong>fee payments</strong> and send them to selected hosts for execution.</p>
-      </div>
-      </a>
+        <main id="signed-in-flow" style="display: none">
+      <button class="floated" style="margin-top: 1.5em;" id="sign-out-button"> Sign out <span data-behavior="account-id"></span></button>
+      <a href="developer-mydbs.html"><button class="floated" style="margin-top: 1.5em; background-color: darkblue;">My DBs</button></a>
+      <a href="index.html"><button class="floated" style="margin-top: 1.5em;">< Home</button></a>
+      <h1>Developer: Create New Database</h1>
+			<form id="contactform" name="contactform" method="post" action="#">
+            <label for="authorid">Author ID</label>
+            <input id="authorid" name="authorid" type="text" required>
+            <label for="dbname">DB Name</label>
+            <input id="dbname" name="dbname" type="text" required>
+            <label for="license">License</label>
+            <input id="license" name="license" type="text" required>
+            <label for="cid">Content ID</label>
+            <input id="cid" name="cid" type="text" required>
+            <label for="royalty">Royalty (%)</label>
+            <input id="royalty" name="royalty" type="number" required>            
+            <button type="submit">Create</button>
+
+        </form>      
+
       <div class="footer">
         <footer>
           <div class="social">
