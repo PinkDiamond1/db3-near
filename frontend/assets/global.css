@@ -44,11 +44,30 @@ h1 {
   font-size: 1.5em;
 }
 
-#wrap {
+div.wrap {
   border: 2px solid #bbb;
   background-color: var(--card);
   padding: 0.5em;
   margin-bottom: 0.5em;
+}
+
+.floated {
+   float:right;
+   margin-right:5px;
+}
+
+ a div.wrap {
+  display: block;
+  background-color: var(--card);
+  text-decoration: none;
+  color: var(--gray);
+}
+
+ a:hover div.wrap {
+  display: block;
+  background-color: var(--light-gray);
+  color: var(--primary);
+  text-decoration: none;
 }
 
 #btn {
@@ -130,7 +149,7 @@ a:hover,
 a:focus,
 .link:hover,
 .link:focus {
-  text-decoration: underline;
+  text-decoration: none;
   color: blue;
 }
 a:active,
