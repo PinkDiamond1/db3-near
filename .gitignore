@@ -2,4 +2,4 @@
 frontend/dist/*
 frontend/.parcel-cache
 node_modules
-build/
+contract/build/*
