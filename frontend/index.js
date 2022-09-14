@@ -100,7 +100,6 @@ document.querySelector('#new-db-form').onsubmit = async (event) => {
 async function getAndShowOwnDatabases(){
   document.getElementById('database-table').innerHTML = 'Loading ...'
 
-  // Load last 10 donations
   let dbs = await contract.ownDatabases()
 
   document.getElementById('database-table').innerHTML = ''
@@ -127,14 +126,9 @@ function shortHash(h) {
   return h.slice(0,5) + "..." + h.slice(-5);
 }
 
-async function hostDb(dbid) {
-  return await contract.deposit({dbid});
-}
-
 async function getAndShowAllDatabases(){
   document.getElementById('host-table').innerHTML = 'Loading ...'
 
-  // Load last 10 donations
   let dbs = await contract.databases()
 
   document.getElementById('host-table').innerHTML = ''
@@ -150,12 +144,17 @@ async function getAndShowAllDatabases(){
         <td>${elem.royalty_bips/100}%</td>
         <td>
           <div class="flex">
-            <button class="button action" onclick='hostDb("${id}")' >Host</button>
-            <button class="button action">Link</button>
+            <button class="button action" id="host-btn-${id}" >Host</button>
+            <button class="button action" id="link-btn-${id}">Link</button>
           </div>
         </td>
       </tr>
     `
     document.getElementById('host-table').appendChild(tr)
+    document.getElementById('host-btn-'+id).onclick = () => { contract.deposit({dbid:id.toString()}); };
+    document.getElementById('link-btn-'+id).onclick = () => {
+      var uri = window.prompt("Add your API endpoint")
+      contract.register_api({dbid:id.toString(), uri});
+    };
   })
 }
