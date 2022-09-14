@@ -40,8 +40,9 @@ near create-account db3.echa.testnet --masterAccount echa.testnet --initialBalan
 
 # build and deploy the contract (we initialize it right away by setting the owner)
 cd contract
+npm install
 npm run build
-near deploy --accountId db6.echa.testnet --wasmFile build/db3_near.wasm --initFunction init --initArgs '{"owner": "echa.testnet"}'
+near deploy --accountId db3.echa.testnet --wasmFile build/db3_near.wasm --initFunction init --initArgs '{"owner": "echa.testnet"}'
 
 # deploy a new database (this tx also pays for storage allocation, so add some Near)
 # the call returns the db id ("0" for the first)
