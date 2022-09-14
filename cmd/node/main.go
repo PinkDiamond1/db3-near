@@ -146,7 +146,6 @@ func queryHandler(w http.ResponseWriter, r *http.Request) {
     }
 
     // TODO: check embedded transaction is valid and signed
-    // ctx := r.Context()
 
     // execute DB query
     result, err := executeQuery(query)
@@ -196,7 +195,7 @@ func queryHandler(w http.ResponseWriter, r *http.Request) {
             log.Infof("Broadcasting user tx")
             res, err := conn.SendTransactionAsync(query.FeeTx)
             if err == nil {
-                log.Infof("Result: %#v", res)
+                log.Infof("Result: %s", res)
                 break
             } else {
                 log.Error(err)
@@ -220,7 +219,11 @@ func queryHandler(w http.ResponseWriter, r *http.Request) {
                 *big.NewInt(0),
             )
             if err == nil {
-                log.Infof("Result: %#v", res)
+                if r, err := handleResult(res); err != nil {
+                    log.Errorf("%v", err)
+                } else {
+                    log.Infof("Result: %s", string(r))
+                }
                 break
             } else {
                 log.Error(err)
@@ -228,6 +231,18 @@ func queryHandler(w http.ResponseWriter, r *http.Request) {
             }
         }
     }()
+}
+
+func handleResult(res map[string]interface{}) ([]byte, error) {
+    // buf, _ := json.MarshalIndent(res, "", "  ")
+    // log.Infof("Res %s", string(buf))
+    success := res["status"].(map[string]interface{})["SuccessValue"]
+    failed := res["status"].(map[string]interface{})["Failure"]
+    if success == nil {
+        buf, _ := json.Marshal(failed.(map[string]interface{}))
+        return nil, fmt.Errorf("%s", string(buf))
+    }
+    return base64.StdEncoding.DecodeString(success.(string))
 }
 
 func executeQuery(query SignedQuery) (interface{}, error) {

@@ -169,7 +169,7 @@ func run() error {
     }
 
     // serialize transaction
-    buf, err = borsh.Serialize(signedTx)
+    buf, err = borsh.Serialize(*signedTx)
     if err != nil {
         return fmt.Errorf("serializing signed transaction: %v", err)
     }
@@ -180,11 +180,11 @@ func run() error {
         Cid:   c.String(),
         FeeTx: buf,
     }
-    buf, _ = json.Marshal(squery)
-    log.Infof("Signed query %s", string(buf))
+    qbuf, _ := json.Marshal(squery)
+    log.Infof("Signed query %s", string(qbuf))
 
     // call database node
-    resp, err := http.Post(nodeEndpoint, "application/json", bytes.NewBuffer(buf))
+    resp, err := http.Post(nodeEndpoint, "application/json", bytes.NewBuffer(qbuf))
     if err != nil {
         return err
     }
