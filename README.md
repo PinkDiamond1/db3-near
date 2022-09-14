@@ -94,7 +94,7 @@ go run ./cmd/node/ -contract db3.echa.testnet -account node1.echa.testnet
 go run ./cmd/sim/ -contract db3.echa.testnet -query 'SELECT * FROM hello_near' -account echa.testnet
 ```
 
-To run the DB3 frontend, navigate into the `frontend` folder, install dependencies, and run:
+To run the DB3 frontend, navigate into the `frontend` folder, install dependencies, and start it:
 
 ```
 cd frontend
