@@ -1,6 +1,7 @@
 import 'regenerator-runtime/runtime';
 import { Contract } from './near-interface';
 import { Wallet } from './near-wallet';
+import { Hash } from 'ipfs-only-hash';
 
 // create the Wallet and the Contract
 const wallet = new Wallet({contractId: 'db6.echa.testnet'});
@@ -19,6 +20,7 @@ window.onload = async () => {
   // fetchGreeting();
   getAndShowOwnDatabases();
   getAndShowAllDatabases();
+  getAndShowAllDatabasesUser();
 };
 
 // Button clicks
@@ -155,6 +157,55 @@ async function getAndShowAllDatabases(){
     document.getElementById('link-btn-'+id).onclick = () => {
       var uri = window.prompt("Add your API endpoint")
       contract.register_api({dbid:id.toString(), uri});
+    };
+  })
+}
+
+async function getAndShowAllDatabasesUser(){
+  document.getElementById('user-table').innerHTML = 'Loading ...'
+
+  let dbs = await contract.databases()
+
+  document.getElementById('user-table').innerHTML = ''
+
+  dbs.forEach((elem,id) => {
+    let tr = document.createElement('tr')
+    tr.innerHTML = `
+      <tr>
+        <td> <a target="_new" href="https://explorer.testnet.near.org/?query=${elem.author_id}">${elem.author_id}</a> </td>
+        <td>${elem.name}</td>
+        <td>${elem.license}</td>
+        <td><a target="_new" href="https://ipfs.io/ipfs/${elem.code_cid}">${shortHash(elem.code_cid)}</a></td>
+        <td>${elem.royalty_bips/100}%</td>
+        <td>
+          <button class="button action" id="query-btn-${id}">Query</button>
+        </td>
+      </tr>
+    `
+    document.getElementById('user-table').appendChild(tr)
+    document.getElementById('query-btn-'+id).onclick = async () => {
+      var query = window.prompt("Enter your DB query");
+
+      // fetch database endpoints
+      var uris = await contract.discover({dbid: id.toString()});
+      console.log("discovered", uris)
+
+      // calculate content id
+      const data = Buffer.from(query);
+      const cid = await Hash.of(data);
+      console.log("cid", cid)
+
+      // get latest block and add TTL to height
+      var res = await wallet.getLatestBlock();
+      var ttl = (res + 120).toString();
+      console.log("latest block", res)
+
+      // send paymeng tx
+      await contract.escrow({dbid:id.toString(), qid, ttl});
+
+      // run query against one of the uris
+      // TODO
+
     };
   })
 }

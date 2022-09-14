@@ -106,4 +106,11 @@ export class Wallet {
     const transaction = await provider.txStatus(txhash, 'unnused');
     return providers.getTransactionLastResult(transaction);
   }
+
+  async getLatestBlock() {
+    const { network } = this.walletSelector.options;
+    const provider = new providers.JsonRpcProvider({ url: network.nodeUrl });
+    const status = await provider.status();
+    return status.sync_info.latest_block_height;
+  }
 }

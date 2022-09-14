@@ -58,8 +58,8 @@ export class Contract{
     return await this.wallet.callMethod({method: 'register_api', args:{ dbid, uri }});
   }
 
-  async escrow( { dbid, deposit } ){
-    return await this.wallet.callMethod({method: 'escrow', args:{ dbid }, deposit });
+  async escrow( { dbid, qid, ttl, deposit } ){
+    return await this.wallet.callMethod({method: 'escrow', args:{ dbid, qid, ttl }, deposit });
   }
 
   async claim( {} ){
