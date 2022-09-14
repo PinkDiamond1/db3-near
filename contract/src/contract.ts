@@ -205,6 +205,13 @@ class Db3Contract {
     return dbs
   }
 
+  @view({})
+  manifest({ dbid }: { dbid: string }): Manifest {
+    assert(parseInt(dbid) < this.next_id, "Database id does not exist")
+    let m = this.db_manifests.get(dbid) as Manifest
+    return m
+  }
+
   // Views all registered API endpoints for a database
   @view({})
   discover({ dbid }: { dbid: string }): Array<string> {

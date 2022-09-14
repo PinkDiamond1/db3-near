@@ -4,11 +4,11 @@
 package main
 
 import (
-    "context"
-    // "encoding/base64"
+    "encoding/base64"
     "encoding/json"
     "flag"
     "fmt"
+    "io/ioutil"
     "math/big"
     "net/http"
     "os"
@@ -16,11 +16,7 @@ import (
     "time"
 
     "blockwatch.cc/near-api-go"
-    // "blockwatch.cc/near-api-go/keys"
-    // "blockwatch.cc/near-api-go/types"
     "github.com/echa/log"
-    // "github.com/ethereum/go-ethereum/rpc"
-    // "github.com/gorilla/schema"
     cid "github.com/ipfs/go-cid"
 )
 
@@ -28,20 +24,20 @@ var (
     contractAddress string
     networkId       string
     accountId       string
-    rpcEndpoint     string
     databaseId      string
+    rpcEndpoint     string
     port            string
-    // decoder         = schema.NewDecoder()
-    conn    *near.Connection
-    flags   = flag.NewFlagSet("node", flag.ContinueOnError)
-    home    string
-    account *near.Account
+    conn            *near.Connection
+    flags           = flag.NewFlagSet("node", flag.ContinueOnError)
+    home            string
+    account         *near.Account
 )
 
 func init() {
     flags.Usage = func() {}
     flags.StringVar(&contractAddress, "contract", os.Getenv("DB3_CONTRACT_ID"), "DB3 contract")
     flags.StringVar(&accountId, "account", os.Getenv("DB3_NODE_ACCOUNT_ID"), "DB3 node account")
+    flags.StringVar(&databaseId, "db", "0", "DB3 database id to host")
     flags.StringVar(&rpcEndpoint, "rpc", "https://rpc.testnet.near.org", "NEAR RPC endpoint")
     flags.StringVar(&networkId, "net", "testnet", "NEAR network id")
     flags.StringVar(&port, "port", "8000", "HTTP server port")
@@ -81,6 +77,7 @@ func run() error {
     conn = near.NewConnection(rpcEndpoint)
 
     // Use a key pair directly as a signer.
+    log.Infof("Loading account %s", accountId)
     cfg := &near.Config{
         NetworkID: networkId,
         NodeURL:   rpcEndpoint,
@@ -91,10 +88,22 @@ func run() error {
         return err
     }
 
+    if err := initDatabase(); err != nil {
+        return err
+    }
+
     // use default http server
     log.Infof("Listening on :%s", port)
     http.HandleFunc("/", queryHandler)
     return http.ListenAndServe(":"+port, nil)
+}
+
+type Manifest struct {
+    Author      string `json:"author_id"`
+    Name        string `json:"name"`
+    License     string `json:"license"`
+    Cid         string `json:"code_cid"`
+    RoyaltyBips int    `json:"royalty_bips,string"`
 }
 
 type SignedQuery struct {
@@ -137,10 +146,10 @@ func queryHandler(w http.ResponseWriter, r *http.Request) {
     }
 
     // TODO: check embedded transaction is valid and signed
-    ctx := r.Context()
+    // ctx := r.Context()
 
     // execute DB query
-    result, err := executeQuery(ctx, query)
+    result, err := executeQuery(query)
     if err != nil {
         log.Error(err)
         http.Error(w, fmt.Sprintf("query failed: %v", err), http.StatusInternalServerError)
@@ -221,7 +230,50 @@ func queryHandler(w http.ResponseWriter, r *http.Request) {
     }()
 }
 
-func executeQuery(ctx context.Context, query SignedQuery) (interface{}, error) {
+func executeQuery(query SignedQuery) (interface{}, error) {
     log.Infof("Processing query db=%s cid=%s q=%q", query.Db, query.Cid, query.Query)
+
+    // TODO: execute query against a real database
+
     return "Wsup?", nil
+}
+
+func initDatabase() error {
+    // load the database manifest
+    log.Infof("Loading database %s id %s", contractAddress, databaseId)
+    res, err := account.FunctionCall(
+        contractAddress,
+        "manifest",
+        []byte(`{"dbid":"`+databaseId+`"}`),
+        100_000_000_000_000,
+        *big.NewInt(0),
+    )
+    if err != nil {
+        return err
+    }
+    buf, err := base64.StdEncoding.DecodeString(res["status"].(map[string]interface{})["SuccessValue"].(string))
+    if err != nil {
+        return err
+    }
+    var m Manifest
+    if err := json.Unmarshal(buf, &m); err != nil {
+        return err
+    }
+    log.Infof("> %#v", m)
+
+    log.Infof("Initializing database from cid=%s", m.Cid)
+    resp, err := http.Get("https://ipfs.io/ipfs/" + m.Cid)
+    if err != nil {
+        return err
+    }
+    defer resp.Body.Close()
+    sql, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+        return err
+    }
+    log.Infof("SQL\n%s", string(sql))
+
+    // TODO: connect and init a real database here
+
+    return nil
 }
