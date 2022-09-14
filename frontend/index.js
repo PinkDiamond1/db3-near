@@ -3,7 +3,7 @@ import { Contract } from './near-interface';
 import { Wallet } from './near-wallet';
 
 // create the Wallet and the Contract
-const wallet = new Wallet({contractId: process.env.CONTRACT_NAME});
+const wallet = new Wallet({contractId: 'db6.echa.testnet'});
 const contract = new Contract({wallet: wallet});
 
 // Setup on page load
@@ -16,7 +16,9 @@ window.onload = async () => {
     signedOutFlow();
   }
 
-  fetchGreeting();
+  // fetchGreeting();
+  getAndShowOwnDatabases();
+  getAndShowAllDatabases();
 };
 
 // Button clicks
@@ -31,23 +33,23 @@ async function doUserAction(event) {
   document.querySelector('#signed-in-flow main')
     .classList.add('please-wait');
 
-  await contract.setGreeting(greeting.value);
+  // await contract.setGreeting(greeting.value);
 
   // ===== Fetch the data from the blockchain =====
-  await fetchGreeting();
+  // await fetchGreeting();
   document.querySelector('#signed-in-flow main')
     .classList.remove('please-wait');
 }
 
 // Get greeting from the contract on chain
-async function fetchGreeting() {
-  const currentGreeting = await contract.getGreeting();
+// async function fetchGreeting() {
+//   const currentGreeting = await contract.getGreeting();
 
-  document.querySelectorAll('[data-behavior=greeting]').forEach(el => {
-    el.innerText = currentGreeting;
-    el.value = currentGreeting;
-  });
-}
+//   document.querySelectorAll('[data-behavior=greeting]').forEach(el => {
+//     el.innerText = currentGreeting;
+//     el.value = currentGreeting;
+//   });
+// }
 
 // Display the signed-out-flow container
 function signedOutFlow() {
@@ -62,4 +64,98 @@ function signedInFlow() {
   document.querySelectorAll('[data-behavior=account-id]').forEach(el => {
     el.innerText = wallet.accountId;
   });
+}
+
+// On submit, get the greeting and send it to the contract
+document.querySelector('#new-db-form').onsubmit = async (event) => {
+  event.preventDefault()
+
+  // get elements from the form using their id attribute
+  const { fieldset, author_id, name, license, code_cid, royalty_bips } = event.target.elements
+
+  // disable the form while the value gets updated on-chain
+  fieldset.disabled = true
+
+  try {
+    await contract.deploy({
+      author_id: author_id.value,
+      name: name.value,
+      license: license.value,
+      code_cid: code_cid.value,
+      royalty_bips: royalty_bips.value,
+    })
+  } catch (e) {
+    alert(
+      'Something went wrong! ' +
+      'Maybe you need to sign out and back in? ' +
+      'Check your browser console for more info.'
+    )
+    throw e
+  }
+
+  // re-enable the form, whether the call succeeded or failed
+  fieldset.disabled = false
+}
+
+async function getAndShowOwnDatabases(){
+  document.getElementById('database-table').innerHTML = 'Loading ...'
+
+  // Load last 10 donations
+  let dbs = await contract.ownDatabases()
+
+  document.getElementById('database-table').innerHTML = ''
+
+  dbs.forEach(elem => {
+    let tr = document.createElement('tr')
+    tr.innerHTML = `
+      <tr>
+        <td> <a target="_new" href="https://explorer.testnet.near.org/?query=${elem.author_id}">${elem.author_id}</a> </td>
+        <td>${elem.name}</td>
+        <td>${elem.license}</td>
+        <td><a target="_new" href="https://ipfs.io/ipfs/${elem.code_cid}">${shortHash(elem.code_cid)}</a></td>
+        <td>${elem.royalty_bips/100}%</td>
+        <td>
+          <button class="button action">Claim Royalties</button>
+        </td>
+      </tr>
+    `
+    document.getElementById('database-table').appendChild(tr)
+  })
+}
+
+function shortHash(h) {
+  return h.slice(0,5) + "..." + h.slice(-5);
+}
+
+async function hostDb(dbid) {
+  return await contract.deposit({dbid});
+}
+
+async function getAndShowAllDatabases(){
+  document.getElementById('host-table').innerHTML = 'Loading ...'
+
+  // Load last 10 donations
+  let dbs = await contract.databases()
+
+  document.getElementById('host-table').innerHTML = ''
+
+  dbs.forEach((elem,id) => {
+    let tr = document.createElement('tr')
+    tr.innerHTML = `
+      <tr>
+        <td> <a target="_new" href="https://explorer.testnet.near.org/?query=${elem.author_id}">${elem.author_id}</a> </td>
+        <td>${elem.name}</td>
+        <td>${elem.license}</td>
+        <td><a target="_new" href="https://ipfs.io/ipfs/${elem.code_cid}">${shortHash(elem.code_cid)}</a></td>
+        <td>${elem.royalty_bips/100}%</td>
+        <td>
+          <div class="flex">
+            <button class="button action" onclick='hostDb("${id}")' >Host</button>
+            <button class="button action">Link</button>
+          </div>
+        </td>
+      </tr>
+    `
+    document.getElementById('host-table').appendChild(tr)
+  })
 }

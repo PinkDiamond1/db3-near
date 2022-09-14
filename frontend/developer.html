@@ -53,18 +53,20 @@
 				< Home </button>
 		</a>
 		<h1>Developer: Create New Database</h1>
-		<form id="form" name="form" method="post" action="#">
-			<label for="authorid">Author ID</label>
-			<input id="authorid" name="authorid" type="text" required>
-			<label for="dbname">DB Name</label>
-			<input id="dbname" name="dbname" type="text" required>
-			<label for="license">License</label>
-			<input id="license" name="license" type="text" required>
-			<label for="cid">Content ID</label>
-			<input id="cid" name="cid" type="text" placeholder="IPFS hash" required>
-			<label for="royalty">Royalty</label>
-			<input id="royalty" name="royalty" type="number" placeholder="1%" required>
-			<button type="submit" class="floated">Create</button>
+		<form id="new-db-form">
+			<fieldset id="fieldset">
+				<label for="author_id">Author ID</label>
+				<input id="author_id" name="author_id" type="text" required>
+				<label for="name">DB Name</label>
+				<input id="name" name="name" type="text" required>
+				<label for="license">License</label>
+				<input id="license" name="license" type="text" required>
+				<label for="code_cid">Content ID</label>
+				<input id="code_cid" name="code_cid" type="text" placeholder="IPFS hash" required>
+				<label for="royalty_bips">Royalty</label>
+				<input id="royalty_bips" name="royalty" type="number" placeholder="1%" required>
+				<button class="floated">Create</button>
+			</fieldset>
 		</form>
 		<div class="footer">
 			<footer>
